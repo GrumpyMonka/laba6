@@ -19,7 +19,7 @@ void BFSD(int start, int* dist, int** a, int n) {
 	Steck.push(start);
 	dist[start] = 0;
 	printf("\nResult:\n");
-	printf("v%d = 0\n", start + 1);
+	printf("v%d : ", start + 1);
 
 	int v;
 	while (!Steck.empty()) {
@@ -29,7 +29,7 @@ void BFSD(int start, int* dist, int** a, int n) {
 			if (a[v][i] && (dist[i] == -1)) {
 				Steck.push(i);
 				dist[i] = dist[v] + 1;
-				printf("v%d = %d\n", i + 1 , dist[i]);
+				printf("v%d(%d) ", i + 1 , dist[i]);
 			}
 		}
 	}
@@ -45,7 +45,7 @@ void BFSDList(int start, int *dist, List *a, int n) {
 	Steck.push(start);
 	dist[start] = 0;
 	printf("\nResult:\n");
-	printf("v%d = 0\n", start + 1);
+	printf("v%d : ", start + 1);
 
 	int v;
 	while (!Steck.empty()) {
@@ -55,7 +55,7 @@ void BFSDList(int start, int *dist, List *a, int n) {
 			if (dist[a[v][i]] == -1) {
 				Steck.push(a[v][i]);
 				dist[a[v][i]] = dist[v] + 1;
-				printf("v%d = %d\n", a[v][i] + 1 , dist[a[v][i]]);
+				printf("v%d(%d) ", a[v][i] + 1 , dist[a[v][i]]);
 			}
 		}
 	}
@@ -76,8 +76,8 @@ void DFSD(int start, int* dist, int** a, int n) {
 	while (!Steck.empty()) {
 		v = Steck.top();
 		Steck.pop();
-		printf("v%d = %d\n", v + 1, dist[v]);
-		for (int i = 0; i < n; i++) {
+		printf("v%d(%d) ", v + 1, dist[v]);
+		for (int i = n - 1; i > -1; i--) {
 			if (a[v][i] && (dist[i]) == -1) {
 				Steck.push(i);
 				dist[i] = dist[v] + 1;
@@ -101,8 +101,8 @@ void DFSDList(int start, int* dist, List* a, int n) {
 	while (!Steck.empty()) {
 		v = Steck.top();
 		Steck.pop();
-		printf("v%d = %d\n", v + 1, dist[v]);
-		for (int i = 0; i < a[v].GetSize(); i++) {
+		printf("v%d(%d) ", v + 1, dist[v]);
+		for (int i = a[v].GetSize() - 1; i > -1; i--) {
 			if (dist[a[v][i]] == -1) {
 				Steck.push(a[v][i]);
 				dist[a[v][i]] = dist[v] + 1;
@@ -156,15 +156,12 @@ void DFSD_norec(int start, int* dist, int** a, int n) {
 void zad1(){
 	setlocale(LC_ALL, "Rus");
 
-	int n, v;
+	int n;
 	
 	printf("–еализаци€ поиска расто€ний в матрице смежности queue\n");
 
 	printf("¬ведите размер матрицы - ");
 	scanf("%d", &n);
-
-	printf("¬ведите номер стартовой вершины - ");
-	scanf("%d", &v);
 
 	int **a = dynamic_array(n); //матрица смежности
 	int *vis = dynamic_array2(n); //проверка на прохождение
@@ -195,8 +192,12 @@ void zad1(){
 		printf("\n");
 	}
 
-	v--;
-	BFSD(v, vis, a, n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			vis[j] = -1;
+		}
+		BFSD(i, vis, a, n);
+	}
 
 	dynamic_array_free(a, n);
 	dynamic_array_free1(vis, n);
@@ -206,15 +207,12 @@ void zad1(){
 void zad2() {
 	setlocale(LC_ALL, "Rus");
 
-	int n, v;
+	int n;
 
 	printf("\n\n–еализаци€ поиска расто€ний в списке смежности queue\n");
 
 	printf("¬ведите размер матрицы - ");
 	scanf("%d", &n);
-
-	printf("¬ведите номер вершины дл€ прохождени€ - ");
-	scanf("%d", &v);
 
 	List *relist = new List[n];
 
@@ -252,8 +250,12 @@ void zad2() {
 		printf("\n");
 	}
 
-	v--;
-	BFSDList(v, vis, relist, n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			vis[j] = -1;
+		}
+		BFSDList(i, vis, relist, n);
+	}
 
 	delete[] relist;
 	_getch();
@@ -262,16 +264,13 @@ void zad2() {
 void zad3() {
 	setlocale(LC_ALL, "Rus");
 
-	int n, v;
+	int n;
 	clock_t start, end;
 
-	printf("\n\n–еализаци€ поиска расто€ний в списке смежности stack\n");
+	printf("\n\n–еализаци€ поиска расто€ний в матрице смежности stack\n");
 
 	printf("¬ведите размер матрицы - ");
 	scanf("%d", &n);
-
-	printf("¬ведите номер вершины дл€ прохождени€ - ");
-	scanf("%d", &v);
 
 	int **a = dynamic_array(n); //матрица смежности
 	int *vis = dynamic_array2(n); //проверка на прохождение
@@ -302,8 +301,12 @@ void zad3() {
 		printf("\n");
 	}
 
-	v--;
-	DFSD(v, vis, a, n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			vis[j] = -1;
+		}
+		DFSD(i, vis, a, n);
+	}
 	
 	dynamic_array_free(a, n);
 	dynamic_array_free1(vis, n);
@@ -313,15 +316,12 @@ void zad3() {
 void zad4() {
 	setlocale(LC_ALL, "Rus");
 
-	int n, v;
+	int n;
 
 	printf("\n\n–еализаци€ поиска расто€ний в списке смежности stack\n");
 
 	printf("¬ведите размер матрицы - ");
 	scanf("%d", &n);
-
-	printf("¬ведите номер вершины дл€ прохождени€ - ");
-	scanf("%d", &v);
 
 	List* relist = new List[n];
 
@@ -359,8 +359,12 @@ void zad4() {
 		printf("\n");
 	}
 
-	v--;
-	DFSDList(v, vis, relist, n);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			vis[j] = -1;
+		}
+		DFSDList(i, vis, relist, n);
+	}
 
 	delete[] relist;
 	_getch();
@@ -369,16 +373,13 @@ void zad4() {
 void zvezdochki() {
 	setlocale(LC_ALL, "Rus");
 
-	int n, v;
+	int n;
 	clock_t start, end;
 
 	printf("\n\n—равнение времени поиска расто€ний в матрице смежности BFSD и DFSD\n");
 
 	printf("¬ведите размер матрицы - ");
 	scanf("%d", &n);
-
-	printf("¬ведите номер вершины дл€ прохождени€ - ");
-	scanf("%d", &v);
 
 	int **a = dynamic_array(n); //матрица смежности
 	int *vis = dynamic_array2(n); //проверка на прохождение
@@ -402,11 +403,10 @@ void zvezdochki() {
 	}
 
 	printf("\nResult BFSD: ");
-	v--;
 
 	start = clock();
 
-	BFSD_norec(v, vis, a, n);
+	BFSD_norec(0 , vis, a, n);
 
 	end = clock();
 	printf("\nUse %.2f msecond.\n", difftime(end, start));
@@ -419,7 +419,7 @@ void zvezdochki() {
 	printf("\nResult DFSD: ");
 	start = clock();
 
-	DFSD_norec(v, vis, a, n);
+	DFSD_norec(0, vis, a, n);
 
 	end = clock();
 	printf("\nUse %.2f msecond.\n", difftime(end, start));

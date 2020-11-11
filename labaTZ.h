@@ -6,7 +6,7 @@ void BFSDList(int v, int *dist, List *a, int n);
 void DFSD(int start, int* dist, int** a, int n);
 void DFSDList(int v, int* dist, List* a, int n);
 void BFSD_norec(int start, int* dist, int** a, int n);
-void BFSDList_norec(int start, int* dist, List* a, int n);
+void DFSD_norec(int start, int* dist, int** a, int n);
 
 void zad1();
 void zad2();
